@@ -1,0 +1,7 @@
+{
+  "name": "AppMieGacoan",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

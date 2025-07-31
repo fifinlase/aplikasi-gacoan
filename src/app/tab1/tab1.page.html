@@ -1,0 +1,571 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center">
+      📊 Dashboard Mie Gacoan
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <!-- Welcome Section -->
+  <div class="welcome-section">
+    <h2>Selamat Datang! 👋</h2>
+    <p>Pantau performa bisnis Mie Gacoan Anda</p>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div class="loading-container" *ngIf="isLoading">
+    <ion-spinner name="crescent" class="custom-spinner"></ion-spinner>
+    <p>Memuat data dashboard...</p>
+  </div>
+
+  <!-- Dashboard Content -->
+  <div *ngIf="!isLoading">
+    
+    <!-- Statistics Cards -->
+    <div class="stats-container">
+      
+      <!-- Total Pesanan -->
+      <div class="stat-card orders">
+        <div class="card-header">
+          <div class="card-icon">
+            <ion-icon name="receipt-outline"></ion-icon>
+          </div>
+          <ion-chip color="warning" size="small">Live</ion-chip>
+        </div>
+        <div class="card-content">
+          <h3>{{ totalPesanan || 0 }}</h3>
+          <p>Total Pesanan</p>
+          <div class="card-footer">
+            <span class="trend positive">
+              <ion-icon name="trending-up"></ion-icon>
+              Hari ini
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Pembayaran -->
+      <div class="stat-card revenue">
+        <div class="card-header">
+          <div class="card-icon">
+            <ion-icon name="cash-outline"></ion-icon>
+          </div>
+          <ion-chip color="success" size="small">Rp</ion-chip>
+        </div>
+        <div class="card-content">
+          <h3>{{ totalPembayaran | number:'1.0' }}</h3>
+          <p>Total Pembayaran</p>
+          <div class="card-footer">
+            <span class="trend positive">
+              <ion-icon name="arrow-up"></ion-icon>
+              Revenue
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Porsi -->
+      <div class="stat-card portions">
+        <div class="card-header">
+          <div class="card-icon">
+            <ion-icon name="restaurant-outline"></ion-icon>
+          </div>
+          <ion-chip color="tertiary" size="small">🍜</ion-chip>
+        </div>
+        <div class="card-content">
+          <h3>{{ totalPorsi || 0 }}</h3>
+          <p>Total Porsi</p>
+          <div class="card-footer">
+            <span class="spice-info">
+              <ion-icon name="flame-outline"></ion-icon>
+              Berbagai level
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pelanggan Unik -->
+      <div class="stat-card customers">
+        <div class="card-header">
+          <div class="card-icon">
+            <ion-icon name="people-outline"></ion-icon>
+          </div>
+          <ion-chip color="medium" size="small">👥</ion-chip>
+        </div>
+        <div class="card-content">
+          <h3>{{ pelangganUnik || 0 }}</h3>
+          <p>Pelanggan Unik</p>
+          <div class="card-footer">
+            <span class="customer-info">
+              <ion-icon name="person-add"></ion-icon>
+              Pelanggan baru
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Popular Menu Section -->
+    <div class="section-container">
+      <h3 class="section-title">
+        <ion-icon name="star"></ion-icon>
+        Menu Terpopuler
+      </h3>
+      
+      <div class="menu-list">
+        <div class="menu-item">
+          <div class="menu-emoji">🍜</div>
+          <div class="menu-info">
+            <h4>Mie Setan</h4>
+            <p>Level pedas tinggi</p>
+          </div>
+          <div class="menu-badge bestseller">
+            <ion-icon name="flame"></ion-icon>
+          </div>
+        </div>
+        
+        <div class="menu-item">
+          <div class="menu-emoji">🍜</div>
+          <div class="menu-info">
+            <h4>Mie Hompimpa</h4>
+            <p>Favorit pelanggan</p>
+          </div>
+          <div class="menu-badge popular">
+            <ion-icon name="star"></ion-icon>
+          </div>
+        </div>
+        
+        <div class="menu-item">
+          <div class="menu-emoji">🍜</div>
+          <div class="menu-info">
+            <h4>Mie Garuk</h4>
+            <p>Rasa otentik</p>
+          </div>
+          <div class="menu-badge">
+            <ion-icon name="heart"></ion-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="section-container">
+      <h3 class="section-title">
+        <ion-icon name="flash"></ion-icon>
+        Aksi Cepat
+      </h3>
+      
+      <div class="action-item" (click)="goToTab2()">
+  <div class="action-icon add">
+    <ion-icon name="add-circle"></ion-icon>
+  </div>
+  <span>Tambah Pesanan</span>
+</div>
+        
+        <div class="action-item" (click)="goToTab3()">
+  <div class="action-icon list">
+    <ion-icon name="list"></ion-icon>
+  </div>
+  <span>Lihat Pesanan</span>
+</div>
+          <!-- Tombol navigasi ke halaman Tentang Aplikasi -->
+<div class="action-item" (click)="goToTab4()">
+  <div class="action-icon about">
+    <ion-icon name="information-circle-outline"></ion-icon>
+  </div>
+  <span>Tentang Aplikasi</span>
+</div>
+</div>
+
+    <!-- Payment Info -->
+    <div class="section-container">
+      <h3 class="section-title">
+        <ion-icon name="card"></ion-icon>
+        Metode Pembayaran
+      </h3>
+      
+      <div class="payment-methods">
+        <div class="payment-method">
+          <div class="payment-icon cash">💵</div>
+          <div class="payment-info">
+            <span class="method-name">Cash</span>
+            <span class="method-desc">Pembayaran tunai</span>
+          </div>
+        </div>
+        
+        <div class="payment-method">
+          <div class="payment-icon qris">📱</div>
+          <div class="payment-info">
+            <span class="method-name">QRIS</span>
+            <span class="method-desc">Scan untuk bayar</span>
+          </div>
+        </div>
+        
+        <div class="payment-method">
+          <div class="payment-icon transfer">🏦</div>
+          <div class="payment-info">
+            <span class="method-name">Transfer</span>
+            <span class="method-desc">Transfer bank</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</ion-content>
+
+<style>
+/* Global Styles */
+ion-content {
+  --background: #f8fafc;
+}
+
+/* Welcome Section */
+.welcome-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 24px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.welcome-section h2 {
+  margin: 0 0 8px 0;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.welcome-section p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 0.95rem;
+}
+
+/* Loading */
+.loading-container {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6b7280;
+}
+
+.custom-spinner {
+  width: 40px;
+  height: 40px;
+  --color: #667eea;
+}
+
+/* Stats Container */
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  color: white;
+}
+
+.stat-card.orders .card-icon {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.stat-card.revenue .card-icon {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.stat-card.portions .card-icon {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.stat-card.customers .card-icon {
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+}
+
+.card-content h3 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #111827;
+  margin: 0 0 4px 0;
+  line-height: 1;
+}
+
+.card-content p {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin: 0 0 12px 0;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+}
+
+.trend, .spice-info, .customer-info {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.trend.positive {
+  color: #059669;
+}
+
+/* Section Container */
+.section-container {
+  margin-bottom: 32px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #374151;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+/* Menu List */
+.menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.menu-item {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.menu-emoji {
+  font-size: 2rem;
+}
+
+.menu-info {
+  flex: 1;
+}
+
+.menu-info h4 {
+  margin: 0 0 4px 0;
+  color: #111827;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.menu-info p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.8rem;
+}
+
+.menu-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.9rem;
+  background: #9ca3af;
+}
+
+.menu-badge.bestseller {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.menu-badge.popular {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+/* Actions Grid */
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.action-item {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.action-item:hover {
+  transform: translateY(-2px);
+}
+
+.action-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: white;
+}
+
+.action-icon.add {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.action-icon.list {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.action-icon.report {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.action-icon.settings {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+}
+
+.action-item span {
+  color: #374151;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Payment Methods */
+.payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.payment-method {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.payment-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  background: #f3f4f6;
+}
+
+.payment-info {
+  flex: 1;
+}
+
+.method-name {
+  display: block;
+  color: #111827;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.method-desc {
+  display: block;
+  color: #6b7280;
+  font-size: 0.8rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .stats-container {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .actions-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .card-content h3 {
+    font-size: 1.8rem;
+  }
+  
+  .welcome-section {
+    padding: 20px;
+  }
+  
+  .welcome-section h2 {
+    font-size: 1.2rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .stats-container {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .actions-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Simple animations */
+.stat-card, .menu-item, .action-item, .payment-method {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>

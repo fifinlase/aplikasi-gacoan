@@ -1,0 +1,487 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="danger">
+    <ion-title class="ion-text-center">
+      🍜 Mie Gacoan - Pemesanan
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="hero-content">
+      <ion-icon name="restaurant" class="hero-icon"></ion-icon>
+      <h2>Pesan Mie Favoritmu!</h2>
+      <p>Nikmati kelezatan mie dengan level pedas pilihanmu</p>
+    </div>
+    <div class="hero-decoration">
+      <div class="spice-icon">🌶️</div>
+      <div class="spice-icon delay-1">🌶️</div>
+      <div class="spice-icon delay-2">🌶️</div>
+    </div>
+  </div>
+
+  <form (ngSubmit)="submitForm()">
+    <!-- Customer Info Card -->
+    <ion-card class="form-card customer-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="person-circle" class="section-icon"></ion-icon>
+          Informasi Pemesan
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list lines="none">
+          <ion-item class="custom-item">
+            <ion-icon name="person" slot="start" class="item-icon"></ion-icon>
+            <ion-label position="floating">Nama Pemesan</ion-label>
+            <ion-input [(ngModel)]="nama" name="nama" required></ion-input>
+          </ion-item>
+
+          <ion-item class="custom-item">
+            <ion-icon name="call" slot="start" class="item-icon"></ion-icon>
+            <ion-label position="floating">No HP</ion-label>
+            <ion-input [(ngModel)]="nohp" name="nohp" required type="tel"></ion-input>
+          </ion-item>
+
+          <ion-item class="custom-item">
+            <ion-icon name="mail" slot="start" class="item-icon"></ion-icon>
+            <ion-label position="floating">Email</ion-label>
+            <ion-input [(ngModel)]="email" name="email" type="email"></ion-input>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Menu Selection Card -->
+    <ion-card class="form-card menu-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="restaurant-outline" class="section-icon"></ion-icon>
+          Pilihan Menu
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list lines="none">
+          <ion-item class="custom-item">
+            <ion-icon name="fast-food" slot="start" class="item-icon"></ion-icon>
+            <ion-label>Menu Pilihan</ion-label>
+            <ion-select [(ngModel)]="menu" name="menu" interface="popover" placeholder="Pilih menu favoritmu">
+              <ion-select-option value="mie-hompimpa">🍜 Mie Hompimpa</ion-select-option>
+              <ion-select-option value="mie-garuk">🍜 Mie Garuk</ion-select-option>
+              <ion-select-option value="mie-setan">🍜 Mie Setan</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item class="custom-item">
+            <ion-icon name="duplicate" slot="start" class="item-icon"></ion-icon>
+            <ion-label position="floating">Jumlah Porsi</ion-label>
+            <ion-input type="number" [(ngModel)]="jumlah" name="jumlah" min="1" placeholder="1"></ion-input>
+          </ion-item>
+
+          <ion-item class="custom-item spicy-item">
+            <ion-icon name="flame" slot="start" class="item-icon spicy-icon"></ion-icon>
+            <ion-label>Level Pedas (0–8)</ion-label>
+            <ion-select [(ngModel)]="level" name="level" interface="popover" placeholder="Pilih level pedasmu">
+              <ion-select-option value="0">😊 0 - Tidak Pedas</ion-select-option>
+              <ion-select-option value="1">😋 1 - Sangat Ringan</ion-select-option>
+              <ion-select-option value="2">🙂 2 - Ringan</ion-select-option>
+              <ion-select-option value="3">😐 3 - Sedang</ion-select-option>
+              <ion-select-option value="4">😅 4 - Cukup Pedas</ion-select-option>
+              <ion-select-option value="5">😰 5 - Pedas</ion-select-option>
+              <ion-select-option value="6">🥵 6 - Pedas Banget</ion-select-option>
+              <ion-select-option value="7">😱 7 - Super Pedas</ion-select-option>
+              <ion-select-option value="8">🔥 8 - Ekstra Pedas</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Payment Card -->
+    <ion-card class="form-card payment-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="card" class="section-icon"></ion-icon>
+          Metode Pembayaran
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-radio-group [(ngModel)]="pembayaran" name="pembayaran">
+          <ion-item class="payment-option">
+            <ion-icon name="cash" slot="start" class="payment-icon"></ion-icon>
+            <ion-radio value="cash"></ion-radio>
+            <ion-label>Cash</ion-label>
+            <div class="payment-badge cash-badge" slot="end">Tunai</div>
+          </ion-item>
+          <ion-item class="payment-option">
+            <ion-icon name="qr-code" slot="start" class="payment-icon"></ion-icon>
+            <ion-radio value="qris"></ion-radio>
+            <ion-label>QRIS</ion-label>
+            <div class="payment-badge qris-badge" slot="end">Scan</div>
+          </ion-item>
+          <ion-item class="payment-option">
+            <ion-icon name="card-outline" slot="start" class="payment-icon"></ion-icon>
+            <ion-radio value="transfer"></ion-radio>
+            <ion-label>Transfer Bank</ion-label>
+            <div class="payment-badge transfer-badge" slot="end">Online</div>
+          </ion-item>
+        </ion-radio-group>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Notes Card -->
+    <ion-card class="form-card notes-card">
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="chatbubble-outline" class="section-icon"></ion-icon>
+          Catatan Tambahan
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item class="custom-item" lines="none">
+          <ion-icon name="create-outline" slot="start" class="item-icon"></ion-icon>
+          <ion-label position="floating">Pesan khusus atau permintaan</ion-label>
+          <ion-textarea [(ngModel)]="catatan" name="catatan" rows="3" placeholder="Contoh: Tolong jangan terlalu asin..."></ion-textarea>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Submit Button -->
+    <div class="submit-container">
+      <ion-button expand="block" type="submit" class="submit-button">
+        <ion-icon name="rocket" slot="start"></ion-icon>
+        Pesan Sekarang
+        <div class="button-shine"></div>
+      </ion-button>
+    </div>
+  </form>
+
+  <!-- Footer -->
+  <div class="footer-info">
+    <p>🕐 Estimasi: 15-20 menit • 📞 Hubungi kami jika ada pertanyaan</p>
+  </div>
+</ion-content>
+
+<style>
+/* Global Styles */
+ion-content {
+  --background: linear-gradient(135deg, #fff5f5 0%, #ffe4e1 100%);
+}
+
+/* Hero Section */
+.hero-section {
+  text-align: center;
+  padding: 20px;
+  margin-bottom: 20px;
+  position: relative;
+  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+  border-radius: 20px;
+  color: white;
+  box-shadow: 0 8px 32px rgba(220, 38, 38, 0.3);
+  overflow: hidden;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-icon {
+  font-size: 3rem;
+  margin-bottom: 10px;
+  animation: bounce 2s infinite;
+}
+
+.hero-section h2 {
+  margin: 10px 0 5px 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.hero-section p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 0.9rem;
+}
+
+.hero-decoration {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.spice-icon {
+  position: absolute;
+  font-size: 1.5rem;
+  opacity: 0.2;
+  animation: float 3s ease-in-out infinite;
+}
+
+.spice-icon:nth-child(1) {
+  top: 20%;
+  right: 10%;
+}
+
+.spice-icon:nth-child(2) {
+  top: 60%;
+  right: 80%;
+  animation-delay: 1s;
+}
+
+.spice-icon:nth-child(3) {
+  top: 80%;
+  right: 30%;
+  animation-delay: 2s;
+}
+
+/* Card Styles */
+.form-card {
+  margin-bottom: 16px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  border: none;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.form-card ion-card-header {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.form-card ion-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.section-icon {
+  color: #dc2626;
+  font-size: 1.2rem;
+}
+
+/* Custom Items */
+.custom-item {
+  --background: transparent;
+  --border-radius: 12px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  margin-bottom: 8px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.custom-item:hover {
+  --background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.item-icon {
+  color: #6b7280;
+  margin-right: 8px;
+  font-size: 1.1rem;
+}
+
+.spicy-item .spicy-icon {
+  color: #dc2626;
+  animation: pulse 2s infinite;
+}
+
+/* Payment Options */
+.payment-option {
+  --background: transparent;
+  --border-radius: 12px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  margin-bottom: 8px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.payment-option:hover {
+  --background: rgba(255, 255, 255, 0.9);
+  transform: translateX(4px);
+}
+
+.payment-icon {
+  color: #6b7280;
+  margin-right: 12px;
+}
+
+.payment-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.cash-badge {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.qris-badge {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.transfer-badge {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* Submit Button */
+.submit-container {
+  margin: 24px 0;
+  padding: 0 4px;
+}
+
+.submit-button {
+  --background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+  --border-radius: 16px;
+  height: 56px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(220, 38, 38, 0.3);
+  transition: all 0.3s ease;
+}
+
+.submit-button:hover {
+  --background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(220, 38, 38, 0.4);
+}
+
+.button-shine {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shine 2s infinite;
+}
+
+/* Footer */
+.footer-info {
+  text-align: center;
+  padding: 20px;
+  margin-top: 20px;
+  color: #6b7280;
+  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+/* Animations */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(5deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes shine {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .hero-icon {
+    font-size: 2.5rem;
+  }
+  
+  .hero-section h2 {
+    font-size: 1.3rem;
+  }
+  
+  .form-card {
+    margin-bottom: 12px;
+  }
+  
+  .submit-button {
+    height: 52px;
+    font-size: 1rem;
+  }
+}
+
+/* Color Customizations */
+ion-item.item-has-focus ion-label {
+  color: #dc2626 !important;
+}
+
+ion-input.has-focus,
+ion-select.has-focus,
+ion-textarea.has-focus {
+  --highlight-color: #dc2626;
+}
+
+ion-radio.radio-checked {
+  --color-checked: #dc2626;
+}
+
+/* Custom Select & Input Styling */
+ion-select {
+  --placeholder-color: #9ca3af;
+}
+
+ion-input, ion-textarea {
+  --placeholder-color: #9ca3af;
+}
+
+ion-select-option {
+  --color: #374151;
+}
+</style>
